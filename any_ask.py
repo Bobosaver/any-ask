@@ -59,7 +59,7 @@ def AI_draw(address,ask):
     image = Image.open(BytesIO(img_data))
     st.image(image)
     image.save("./AI.jpg")
-    st.download_button("点击下载AI图像",AI.jpg,file_name='ai.png',use_container_width=False)
+    st.download_button("点击下载AI图像",data=file,file_name='ai.jpg',mime="image/jpg",use_container_width=False)
 
 
 if key == true_key:
