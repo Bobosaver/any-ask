@@ -79,7 +79,7 @@ if key == true_key:
             更好的处理最多32K长度的上下文。','文心一言4.0版本，更智能（收费高）','业内知名的跨模态大模型，由StabilityAI研发并开源(仅该模型可绘图)']
     
     choose_func = st.radio(':rainbow[请选择AI模型]',op_func,captions=Help,index=0)
-
+    ques = st.text_input('请输入你的问题：',value="你好") 
     if choose_func == op_func[0]:
         ip = ERNIE_Bot
         main(ip,ques)
@@ -105,7 +105,6 @@ if key == true_key:
         ip = Stable_Diffusion_XL
         AI_draw(ip,ques)
 
-    ques = st.text_input('请输入你的问题：',value="你好")  
 
 else:
     st.write('请输入正确的密码！')
