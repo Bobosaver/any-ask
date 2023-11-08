@@ -1,6 +1,9 @@
 import requests
 import json
 import streamlit as st
+import base64
+from PIL import Image
+from io import BytesIO
 
 #验证登录
 key = st.text_input('请输入密码',value=None)  
