@@ -1,51 +1,77 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
+import requests
+import json
 import streamlit as st
-from streamlit.logger import get_logger
 
-LOGGER = get_logger(__name__)
+#验证登录
+key = st.text_input('请输入密码',value=None)  
+true_key = 'ytf19961227'
 
+if key == true_key:
+    API_KEY = "LQIuATY8Ozjb2tcYfpAXwY8T"
+    SECRET_KEY = "GHjTSHgtF9vEhx3dMkZFA0HeGp5x6m1I"
+    access_token = "24.aa295f8246165e6cf8cc8d625b68723f.2592000.1701999045.282335-42583951"
 
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
+    ERNIE_Bot = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=" + access_token
+    ERNIE_Bot_turbo = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/eb-instant?access_token="+ access_token
+    Llama_2_70b = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/llama_2_70b?access_token="+ access_token
+    Qianfan_Chinese_Llama_2_7B = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/qianfan_chinese_llama_2_7b?access_token="+ access_token
+    Qianfan_BLOOMZ_7B_compressed = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/qianfan_bloomz_7b_compressed?access_token=" + access_token
+    ChatGLM2_6B_32K = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/chatglm2_6b_32k?access_token=" + access_token
+    ERNIE_Bot_4  = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token=" + access_token
 
-    st.write("# Welcome to Streamlit! 👋")
+    #选择使用功能
+    op_func =['ERNIE_Bot','ERNIE_Bot_turbo','Llama_2_70b','Qianfan_Chinese_Llama_2_7B','Qianfan_BLOOMZ_7B_compressed','ChatGLM2_6B_32K','ERNIE_Bot_4']
+    Help = ['百度自行研发的大语言模型免费版（不推荐）','百度自行开发的模型，响应速度更快（推荐）','Meta AI研发并\
+            开源，在编码、推理及知识应用等场景表现优秀，Llama-2-70b-chat是高精度效果的原生开源版本（英文输出）','Llama-2-7b模型的中文版，在CMMLU、C-EVAL等中文数据集上表现优异。','BLOOMZ-7B的中文版，融合量化、稀疏化\
+            等技术，显存占用低。','智谱AI与清华KEG实验室发布的中英双语对话模型，强化了对于长文本的理解能力，能够\
+            更好的处理最多32K长度的上下文。','文心一言4.0版本，更智能（收费高）']
+    choose_func = st.radio(':rainbow[请选择Chat模型]',op_func,captions=Help,index=0)
 
-    st.sidebar.success("Select a demo above.")
+    if choose_func == op_func[0]:
+        ip = ERNIE_Bot
+    if choose_func == op_func[1]:
+        ip = ERNIE_Bot_turbo
+    if choose_func == op_func[2]:
+        ip = Llama_2_70b
+    if choose_func == op_func[3]:
+        ip = Qianfan_Chinese_Llama_2_7B
+    if choose_func == op_func[4]:
+        ip = Qianfan_BLOOMZ_7B_compressed
+    if choose_func == op_func[5]:
+        ip = ChatGLM2_6B_32K
+    if choose_func == op_func[6]:
+        ip = ERNIE_Bot_4
 
-    st.markdown(
+    ques = st.text_input('请输入你的问题：',value="你好，今天星期几？")  
+        
+    def main(address,ask):
+        url =  address
+    #注意message必须是奇数条
+        payload = json.dumps({
+            "messages": [
+                {
+                    "role": "user",
+                    "content": "%s"%(str(ask))
+                }
+            ]
+        })
+        headers = {
+            'Content-Type': 'application/json'
+        }
+     
+        res = requests.request("POST", url, headers=headers, data=payload).json()
+        st.write(res['result'])
+
+    def get_access_token():
         """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+        使用 AK，SK 生成鉴权签名（Access Token）
+        :return: access_token，或是None(如果错误)
+        """
+        url = "https://aip.baidubce.com/oauth/2.0/token"
+        params = {"grant_type": "client_credentials", "client_id": API_KEY, "client_secret": SECRET_KEY}
+        return str(requests.post(url, params=params).json().get("access_token"))
 
+    main(ip,ques)
 
-if __name__ == "__main__":
-    run()
+else:
+    st.write('请输入正确的密码！')
