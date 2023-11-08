@@ -57,7 +57,7 @@ def AI_draw(address,ask):
     b64code = dic[0]["b64_image"]
     img_data = base64.b64decode(b64code)
     image = Image.open(BytesIO(img_data))
-    st.pyplot(image)
+    st.image(image)
 
 
 if key == true_key:
