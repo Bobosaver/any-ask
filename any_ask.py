@@ -85,28 +85,36 @@ if key == true_key:
     ques = st.text_input('请输入你的问题：',value="你好") 
     if choose_func == op_func[0]:
         ip = ERNIE_Bot
-        main(ip,ques)
+        if st.button("提交对话")
+            main(ip,ques)
     if choose_func == op_func[1]:
         ip = ERNIE_Bot_turbo
-        main(ip,ques)
+        if st.button("提交对话")
+            main(ip,ques)
     if choose_func == op_func[2]:
         ip = Llama_2_70b
-        main(ip,ques)
+        if st.button("提交对话")
+            main(ip,ques)
     if choose_func == op_func[3]:
         ip = Qianfan_Chinese_Llama_2_7B
-        main(ip,ques)
+        if st.button("提交对话")
+            main(ip,ques)
     if choose_func == op_func[4]:
         ip = Qianfan_BLOOMZ_7B_compressed
-        main(ip,ques)
+        if st.button("提交对话")
+            main(ip,ques)
     if choose_func == op_func[5]:
         ip = ChatGLM2_6B_32K
-        main(ip,ques)
+        if st.button("提交对话")
+            main(ip,ques)
     if choose_func == op_func[6]:
         ip = ERNIE_Bot_4
-        main(ip,ques)
+        if st.button("提交对话")
+            main(ip,ques)
     if choose_func == op_func[7]:
         ip = Stable_Diffusion_XL
-        AI_draw(ip,ques)
+        if st.button("确认绘图")
+            AI_draw(ip,ques)
 
 else:
     st.write('请输入正确的密码！')
