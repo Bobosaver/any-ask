@@ -58,8 +58,9 @@ def AI_draw(address,ask):
     img_data = base64.b64decode(b64code)
     image = Image.open(BytesIO(img_data))
     st.image(image)
-    image.save("./AI.jpg")
-    st.download_button("点击下载AI图像",data=file,file_name='ai.jpg',mime="image/jpg",use_container_width=False)
+    image.save("./ai.jpg")
+    with open("ai.jpg", "rb") as file:
+        st.download_button("点击下载AI图像",data=file,file_name='ai.jpg',mime="image/jpg",use_container_width=False)
 
 
 if key == true_key:
