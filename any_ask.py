@@ -107,9 +107,6 @@ if key == true_key:
     if choose_func == op_func[7]:
         ip = Stable_Diffusion_XL
         AI_draw(ip,ques)
-    with open("ai.jpg", "rb") as file:
-        st.download_button("点击下载AI图像",data=file,file_name='ai.jpg',mime="image/jpg",use_container_width=False)
-
 
 else:
     st.write('请输入正确的密码！')
