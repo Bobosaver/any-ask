@@ -37,7 +37,7 @@ def main(address):
             st.write(':green[AI：]'+text+'\n')
             messages.append(d)
         else :
-            sleep(120)
+            sleep(300)
             st.write(':red[您输入了太久！]')
             break
         
