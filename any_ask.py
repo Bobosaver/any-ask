@@ -119,7 +119,7 @@ if key == true_key:
     if choose_func == op_func[7]:
         ip = Stable_Diffusion_XL
         if st.button("确认绘图"):
-            AI_draw(ip,ques)
+            AI_draw(ip)
 
 else:
     st.write('请输入正确的密码！')
