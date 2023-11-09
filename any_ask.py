@@ -50,8 +50,9 @@ def get_access_token():
     params = {"grant_type": "client_credentials", "client_id": API_KEY, "client_secret": SECRET_KEY}
     return str(requests.post(url, params=params).json().get("access_token"))
     
-def AI_draw(address,ask):
-        
+def AI_draw(address):
+
+    ask = st.st.text_input('你想要AI作什么样的图？')
     url = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/text2image/sd_xl?access_token=" + access_token
     
     payload = json.dumps({
