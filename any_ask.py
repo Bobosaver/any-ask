@@ -4,29 +4,43 @@ import streamlit as st
 import base64
 from PIL import Image
 from io import BytesIO
+from time import sleep
 
 #验证登录
 key = st.text_input('请输入密码',value=None)  
 true_key = 'ytf19961227'
 
-def main(address,ask):
-    url =  address
-#注意message必须是奇数条
-    payload = json.dumps({
-        "messages": [
-            {
-                "role": "user",
-                "content": "%s"%(str(ask))
-            }
-        ]
-    })
+@st.cache_data
+def ask_ques(address,message):
+    url = address
+    #注意message必须是奇数条
+    payload = json.dumps({"messages":message})
     headers = {
         'Content-Type': 'application/json'
     }
- 
     res = requests.request("POST", url, headers=headers, data=payload).json()
-    st.write(res['result'])
-
+    return res['result']
+    
+def main(address):
+    messages = []
+    i = 0
+    while True:
+        # 获取用户输入
+        i = i+1
+        user_input = st.text_input('请输入你的问题：'+':red[更换AI模型前务必刷新整个页面！！]',value=None,key=i)
+        if user_input != None:
+            d = {"role":"user","content":user_input}
+            # 将用户输入添加到messages中
+            messages.append(d)
+            text = ask_ques(address,messages)
+            d = {"role":"assistant","content":text}
+            st.write(':green[AI：]'+text+'\n')
+            messages.append(d)
+        else :
+            sleep(120)
+            st.write(':red[您输入了太久！]')
+            break
+        
 def get_access_token():
     """
     使用 AK，SK 生成鉴权签名（Access Token）
@@ -51,7 +65,6 @@ def AI_draw(address,ask):
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
-    
     res = requests.request("POST", url, headers=headers, data=payload).json()
     dic = res['data']
     b64code = dic[0]["b64_image"]
@@ -73,7 +86,6 @@ if key == true_key:
     ChatGLM2_6B_32K = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/chatglm2_6b_32k?access_token=" + access_token
     ERNIE_Bot_4  = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions_pro?access_token=" + access_token
     Stable_Diffusion_XL = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/text2image/sd_xl?access_token=" + access_token
-
     #选择使用功能
     op_func =['ERNIE_Bot','ERNIE_Bot_turbo','Llama_2_70b','Qianfan_Chinese_Llama_2_7B','Qianfan_BLOOMZ_7B_compressed','ChatGLM2_6B_32K','ERNIE_Bot_4','Stable_Diffusion_XL']
     Help = ['百度自行研发的大语言模型免费版（不推荐）','百度自行开发的模型，响应速度更快（推荐）','Meta AI研发并\
@@ -82,35 +94,27 @@ if key == true_key:
             更好的处理最多32K长度的上下文。','文心一言4.0版本，更智能（收费高）','业内知名的跨模态大模型，由StabilityAI研发并开源，建议采用英文描述(仅该模型可绘图)']
     
     choose_func = st.radio(':rainbow[请选择AI模型]',op_func,captions=Help,index=0)
-    ques = st.text_input('请输入你的问题：',value="你好") 
     if choose_func == op_func[0]:
         ip = ERNIE_Bot
-        if st.button("提交对话"):
-            main(ip,ques)
+        main(ip)
     if choose_func == op_func[1]:
         ip = ERNIE_Bot_turbo
-        if st.button("提交对话"):
-            main(ip,ques)
+        main(ip)
     if choose_func == op_func[2]:
         ip = Llama_2_70b
-        if st.button("提交对话"):
-            main(ip,ques)
+        main(ip)
     if choose_func == op_func[3]:
         ip = Qianfan_Chinese_Llama_2_7B
-        if st.button("提交对话"):
-            main(ip,ques)
+        main(ip)
     if choose_func == op_func[4]:
         ip = Qianfan_BLOOMZ_7B_compressed
-        if st.button("提交对话"):
-            main(ip,ques)
+        main(ip)
     if choose_func == op_func[5]:
         ip = ChatGLM2_6B_32K
-        if st.button("提交对话"):
-            main(ip,ques)
+        main(ip)
     if choose_func == op_func[6]:
         ip = ERNIE_Bot_4
-        if st.button("提交对话"):
-            main(ip,ques)
+        main(ip)
     if choose_func == op_func[7]:
         ip = Stable_Diffusion_XL
         if st.button("确认绘图"):
