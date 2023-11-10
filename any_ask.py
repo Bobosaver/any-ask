@@ -117,7 +117,7 @@ if key == true_key:
         main(ip)
     if choose_func == op_func[7]:
         ip = Stable_Diffusion_XL
-        ask = st.st.text_input('你想要AI作什么样的图？')
+        ask = st.text_input('你想要AI作什么样的图？')
         if st.button("确认绘图"):
             AI_draw(ask)
 
