@@ -50,10 +50,8 @@ def get_access_token():
     params = {"grant_type": "client_credentials", "client_id": API_KEY, "client_secret": SECRET_KEY}
     return str(requests.post(url, params=params).json().get("access_token"))
     
-def AI_draw(ques):
+def AI_draw(ques,url):
 
-    url = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/text2image/sd_xl?access_token=" + access_token
-    
     payload = json.dumps({
         "prompt": "%s"%(str(ques)),
         "size": "1024x1024",
@@ -119,7 +117,7 @@ if key == true_key:
         ip = Stable_Diffusion_XL
         ask = st.text_input('你想要AI作什么样的图？')
         if st.button("确认绘图"):
-            AI_draw(ask)
+            AI_draw(ask,ip)
 
 else:
     st.write('请输入正确的密码！')
