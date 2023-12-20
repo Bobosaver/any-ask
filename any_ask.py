@@ -18,8 +18,8 @@ def ask_ques(address,message):
     headers = {
         'Content-Type': 'application/json'
     }
-    res = requests.request("POST", url, headers=headers, data=payload)
-    return res.text
+    res = requests.request("POST", url, headers=headers, data=payload).json()
+    return res['result']
     
 def main(address):
     messages = []
