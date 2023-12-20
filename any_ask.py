@@ -76,7 +76,7 @@ def AI_draw(ques):
 if key == true_key:
     API_KEY = "LQIuATY8Ozjb2tcYfpAXwY8T"
     SECRET_KEY = "GHjTSHgtF9vEhx3dMkZFA0HeGp5x6m1I"
-    access_token = "24.41bf3963948467dde3d4786b29777faa.2592000.1705645888.282335-42583951"
+    access_token = get_access_token()
 
     ERNIE_Bot = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/completions?access_token=" + access_token
     ERNIE_Bot_turbo = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/eb-instant?access_token="+ access_token
