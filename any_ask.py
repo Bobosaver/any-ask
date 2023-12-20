@@ -19,7 +19,7 @@ def ask_ques(address,message):
         'Content-Type': 'application/json'
     }
     res = requests.request("POST", url, headers=headers, data=payload).json()
-    return res['result']
+    return res.text
     
 def main(address):
     messages = []
